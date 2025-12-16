@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KaamSetu | User Login</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #1a46e0;
+      --secondary: #e55a2b;
+      --dark: #ffffff;
+      --gray: #94A3B8;
+      --card: rgba(255,255,255,0.08);
+      --shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #30306fff 0%, #1a1a2e 30%, #2d1810 60%, #16213e 100%);
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+    }
+    #particles-js {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+    .login-container {
+      background: var(--card);
+      backdrop-filter: blur(12px);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      padding: 40px;
+      width: 100%;
+      max-width: 620px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    h2 {
+      margin-bottom: 20px;
+      font-size: 2rem;
+      color: #cbd6f5;
+    }
+    .form-group {
+      margin-bottom: 18px;
+      text-align: left;
+    }
+    label {
+      display: block;
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+    input {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.1);
+      color: white;
+      outline: none;
+      font-size: 15px;
+    }
+    input::placeholder {
+      color: var(--gray);
+    }
+    .btn {
+      display: inline-block;
+      padding: 12px 28px;
+      background: var(--primary);
+      color: white;
+      border-radius: 50px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      border: 1px solid goldenrod;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 15px;
+    }
+    .btn:hover {
+      background: #1535b5;
+      transform: translateY(-2px);
+    }
+    .btn-secondary {
+      background: var(--secondary);
+      border: 1px solid rgba(255,255,255,0.3);
+    }
+    .btn-secondary:hover {
+      background: #c44c21;
+    }
+    .btn-disabled {
+      background: var(--gray);
+      cursor: not-allowed;
+    }
+    .btn-disabled:hover {
+      background: var(--gray);
+      transform: none;
+    }
+    .form-toggle {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 25px;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+    }
+    .toggle-btn {
+      padding: 12px 30px;
+      background: transparent;
+      border: none;
+      color: var(--gray);
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    .toggle-btn.active {
+      color: white;
+    }
+    .toggle-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: var(--primary);
+      border-radius: 3px 3px 0 0;
+    }
+    .form-section {
+      display: none;
+      animation: fadeIn 0.5s ease;
+    }
+    .form-section.active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .extra-links {
+      margin-top: 20px;
+      font-size: 0.9rem;
+    }
+    .extra-links a {
+      color: #00d4ff;
+      text-decoration: none;
+    }
+    .extra-links a:hover {
+      text-decoration: underline;
+    }
+    .social-login {
+      margin: 25px 0;
+      position: relative;
+      text-align: center;
+    }
+    .social-login::before,
+    .social-login::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 40%;
+      height: 1px;
+      background: rgba(255,255,255,0.2);
+    }
+    .social-login::before {
+      left: 0;
+    }
+    .social-login::after {
+      right: 0;
+    }
+    .social-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 15px;
+    }
+    .social-btn {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .social-btn:hover {
+      background: var(--primary);
+      transform: translateY(-3px);
+    }
+    .password-field {
+      position: relative;
+    }
+    .toggle-password {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: var(--gray);
+    }
+    .otp-container {
+      display: flex;
+      justify-content: space-between;
+      margin: 20px 0;
+    }
+    .otp-input {
+      width: 50px;
+      height: 50px;
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+      border-radius: 10px;
+      border: 2px solid rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.1);
+      color: white;
+    }
+    .otp-input:focus {
+      border-color: var(--primary);
+      outline: none;
+    }
+    .resend-otp {
+      margin-top: 15px;
+      font-size: 0.9rem;
+    }
+    .resend-otp a {
+      color: #00d4ff;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .resend-otp a:hover {
+      text-decoration: underline;
+    }
+    .countdown {
+      color: var(--secondary);
+      font-weight: 500;
+    }
+    .step-indicator {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .step {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 10px;
+      font-weight: bold;
+      font-size: 14px;
+    }
+    .step.active {
+      background: var(--primary);
+    }
+    .step.completed {
+      background: var(--secondary);
+    }
+    .step-line {
+      flex: 1;
+      height: 2px;
+      background: rgba(255,255,255,0.1);
+      margin: 0 5px;
+      align-self: center;
+    }
+    .step-line.active {
+      background: var(--primary);
+    }
+    @media (max-width: 768px) {
+      body {
+        padding: 20px;
+      }
+      .login-container {
+        padding: 30px 20px;
+      }
+      h2 {
+        font-size: 1.6rem;
+      }
+      .toggle-btn {
+        padding: 10px 20px;
+        font-size: 14px;
+      }
+      .social-login::before,
+      .social-login::after {
+        width: 35%;
+      }
+      .otp-input {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+      }
+    }
+    @media (max-width: 480px) {
+      .toggle-btn {
+        padding: 8px 15px;
+        font-size: 13px;
+      }
+      .social-buttons {
+        gap: 10px;
+      }
+      .social-btn {
+        width: 45px;
+        height: 45px;
+        font-size: 18px;
+      }
+      .otp-input {
+        width: 35px;
+        height: 35px;
+        font-size: 16px;
+      }
+      .step {
+        width: 25px;
+        height: 25px;
+        font-size: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="particles-js"></div>
+
+  <div class="login-container">
+    <div class="form-toggle">
+      <button class="toggle-btn active" id="loginToggle">Login</button>
+      <button class="toggle-btn" id="registerToggle">Register</button>
+    </div>
+
+    <!-- Login Form -->
+    <div class="form-section active" id="loginForm">
+      <h2>Welcome Back</h2>
+      
+      <!-- Step Indicator -->
+      <div class="step-indicator">
+        <div class="step active">1</div>
+        <div class="step-line"></div>
+        <div class="step">2</div>
+      </div>
+      
+      <form id="loginFormElement">
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" name="email" id="loginEmail" placeholder="Enter email" required>
+        </div>
+        <div class="form-group password-field">
+          <label>Password</label>
+          <input type="password" name="password" id="loginPassword" placeholder="Enter password" required>
+          <span class="toggle-password" onclick="togglePassword('loginPassword', this)">
+            <i class="far fa-eye"></i>
+          </span>
+        </div>
+        <div class="extra-links" style="text-align: right;">
+          <a href="#forgot">Forgot Password?</a>
+        </div>
+        <button type="submit" class="btn">Login & Verify</button>
+      </form>
+
+      <div class="social-login">
+        <span>Or login with</span>
+        <div class="social-buttons">
+          <div class="social-btn">
+            <i class="fab fa-google"></i>
+          </div>
+          <div class="social-btn">
+            <i class="fab fa-facebook-f"></i>
+          </div>
+          <div class="social-btn">
+            <i class="fab fa-apple"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="extra-links">
+        <p>Don't have an account? <a href="#" id="goToRegister">Register now</a></p>
+      </div>
+    </div>
+
+    <!-- Login OTP Verification -->
+    <div class="form-section" id="loginOtpForm">
+      <h2>Verify Your Identity</h2>
+      
+      <!-- Step Indicator -->
+      <div class="step-indicator">
+        <div class="step completed">1</div>
+        <div class="step-line active"></div>
+        <div class="step active">2</div>
+      </div>
+      
+      <p style="margin-bottom: 20px;">We've sent a verification code to <span id="loginEmailToVerify" style="font-weight: 500;"></span></p>
+      
+      <div class="otp-container">
+        <input type="text" class="otp-input" maxlength="1" oninput="moveToNext(this, 'loginOtp2')">
+        <input type="text" class="otp-input" id="loginOtp2" maxlength="1" oninput="moveToNext(this, 'loginOtp3')">
+        <input type="text" class="otp-input" id="loginOtp3" maxlength="1" oninput="moveToNext(this, 'loginOtp4')">
+        <input type="text" class="otp-input" id="loginOtp4" maxlength="1" oninput="moveToNext(this, 'loginOtp5')">
+        <input type="text" class="otp-input" id="loginOtp5" maxlength="1" oninput="moveToNext(this, 'loginOtp6')">
+        <input type="text" class="otp-input" id="loginOtp6" maxlength="1">
+      </div>
+      
+      <div class="resend-otp">
+        <p>Didn't receive the code? <a id="loginResendOtp">Resend</a> <span class="countdown" id="loginCountdown">(02:00)</span></p>
+      </div>
+      
+      <button type="button" class="btn" onclick="verifyLoginOtp()">Verify & Login</button>
+      
+      <div class="extra-links">
+        <p><a href="#" id="backToLoginForm">Back to login</a></p>
+      </div>
+    </div>
+
+    <!-- Registration Form -->
+    <div class="form-section" id="registerForm">
+      <h2>Create Account</h2>
+      
+      <!-- Step Indicator -->
+      <div class="step-indicator">
+        <div class="step active">1</div>
+        <div class="step-line"></div>
+        <div class="step">2</div>
+      </div>
+      
+      <form id="registerFormElement">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" name="fullname" id="regFullname" placeholder="Enter your full name" required>
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" name="email" id="regEmail" placeholder="Enter email address" required>
+        </div>
+        <div class="form-group password-field">
+          <label>Password</label>
+          <input type="password" name="password" id="registerPassword" placeholder="Create password" required>
+          <span class="toggle-password" onclick="togglePassword('registerPassword', this)">
+            <i class="far fa-eye"></i>
+          </span>
+        </div>
+        <div class="form-group password-field">
+          <label>Confirm Password</label>
+          <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm password" required>
+          <span class="toggle-password" onclick="togglePassword('confirmPassword', this)">
+            <i class="far fa-eye"></i>
+          </span>
+        </div>
+        <div class="form-group">
+          <label>
+            <input type="checkbox" name="terms" required>
+            I agree to the <a href="#terms">Terms & Conditions</a> and <a href="#privacy">Privacy Policy</a>
+          </label>
+        </div>
+        <button type="submit" class="btn">Register & Verify Email</button>
+      </form>
+
+      <div class="social-login">
+        <span>Or register with</span>
+        <div class="social-buttons">
+          <div class="social-btn">
+            <i class="fab fa-google"></i>
+          </div>
+          <div class="social-btn">
+            <i class="fab fa-facebook-f"></i>
+          </div>
+          <div class="social-btn">
+            <i class="fab fa-apple"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="extra-links">
+        <p>Already have an account? <a href="#" id="goToLogin">Login now</a></p>
+      </div>
+    </div>
+
+    <!-- Registration OTP Verification -->
+    <div class="form-section" id="registerOtpForm">
+      <h2>Verify Your Email</h2>
+      
+      <!-- Step Indicator -->
+      <div class="step-indicator">
+        <div class="step completed">1</div>
+        <div class="step-line active"></div>
+        <div class="step active">2</div>
+      </div>
+      
+      <p style="margin-bottom: 20px;">We've sent a verification code to <span id="emailToVerify" style="font-weight: 500;"></span></p>
+      
+      <div class="otp-container">
+        <input type="text" class="otp-input" maxlength="1" oninput="moveToNext(this, 'regOtp2')">
+        <input type="text" class="otp-input" id="regOtp2" maxlength="1" oninput="moveToNext(this, 'regOtp3')">
+        <input type="text" class="otp-input" id="regOtp3" maxlength="1" oninput="moveToNext(this, 'regOtp4')">
+        <input type="text" class="otp-input" id="regOtp4" maxlength="1" oninput="moveToNext(this, 'regOtp5')">
+        <input type="text" class="otp-input" id="regOtp5" maxlength="1" oninput="moveToNext(this, 'regOtp6')">
+        <input type="text" class="otp-input" id="regOtp6" maxlength="1">
+      </div>
+      
+      <div class="resend-otp">
+        <p>Didn't receive the code? <a id="regResendOtp">Resend</a> <span class="countdown" id="regCountdown">(02:00)</span></p>
+      </div>
+      
+      <button type="button" class="btn" onclick="verifyRegOtp()">Verify & Complete Registration</button>
+      
+      <div class="extra-links">
+        <p><a href="#" id="backToRegisterForm">Back to registration</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Load particles.js -->
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+
+  <!-- Configure particles and add functionality -->
+  <script>
+    // Store email for OTP verification
+    let currentEmail = '';
+    
+    particlesJS("particles-js", {
+      "particles": {
+        "number": {
+          "value": 100
+        },
+        "size": {
+          "value": 3
+        },
+        "line_linked": {
+          "enable": true
+        },
+        "move": {
+          "speed": 1
+        }
+      }
+    });
+
+    // Toggle between login and register forms
+    const loginToggle = document.getElementById('loginToggle');
+    const registerToggle = document.getElementById('registerToggle');
+    const loginForm = document.getElementById('loginForm');
+    const loginOtpForm = document.getElementById('loginOtpForm');
+    const registerForm = document.getElementById('registerForm');
+    const registerOtpForm = document.getElementById('registerOtpForm');
+    const goToRegister = document.getElementById('goToRegister');
+    const goToLogin = document.getElementById('goToLogin');
+    const backToLoginForm = document.getElementById('backToLoginForm');
+    const backToRegisterForm = document.getElementById('backToRegisterForm');
+
+    loginToggle.addEventListener('click', () => {
+      loginToggle.classList.add('active');
+      registerToggle.classList.remove('active');
+      loginForm.classList.add('active');
+      loginOtpForm.classList.remove('active');
+      registerForm.classList.remove('active');
+      registerOtpForm.classList.remove('active');
+    });
+
+    registerToggle.addEventListener('click', () => {
+      registerToggle.classList.add('active');
+      loginToggle.classList.remove('active');
+      registerForm.classList.add('active');
+      registerOtpForm.classList.remove('active');
+      loginForm.classList.remove('active');
+      loginOtpForm.classList.remove('active');
+    });
+
+    goToRegister.addEventListener('click', (e) => {
+      e.preventDefault();
+      registerToggle.click();
+    });
+
+    goToLogin.addEventListener('click', (e) => {
+      e.preventDefault();
+      loginToggle.click();
+    });
+
+    backToLoginForm.addEventListener('click', (e) => {
+      e.preventDefault();
+      loginForm.classList.add('active');
+      loginOtpForm.classList.remove('active');
+    });
+
+    backToRegisterForm.addEventListener('click', (e) => {
+      e.preventDefault();
+      registerForm.classList.add('active');
+      registerOtpForm.classList.remove('active');
+    });
+
+    // Toggle password visibility
+    function togglePassword(inputId, element) {
+      const passwordInput = document.getElementById(inputId);
+      const eyeIcon = element.querySelector('i');
+      
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        eyeIcon.classList.remove('fa-eye');
+        eyeIcon.classList.add('fa-eye-slash');
+      } else {
+        passwordInput.type = 'password';
+        eyeIcon.classList.remove('fa-eye-slash');
+        eyeIcon.classList.add('fa-eye');
+      }
+    }
+
+    // Move to next OTP input
+    function moveToNext(current, nextInputId) {
+      if (current.value.length === 1) {
+        document.getElementById(nextInputId).focus();
+      }
+    }
+
+    // Start OTP countdown timer
+    function startCountdown(elementId, minutes) {
+      let seconds = minutes * 60;
+      const countdownElement = document.getElementById(elementId);
+      
+      const countdownInterval = setInterval(function() {
+        seconds--;
+        
+        if (seconds <= 0) {
+          clearInterval(countdownInterval);
+          countdownElement.textContent = "(00:00)";
+          return;
+        }
+        
+        const mins = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        countdownElement.textContent = `(${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')})`;
+      }, 1000);
+    }
+
+    // Login form submission
+    document.getElementById('loginFormElement').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const email = document.getElementById('loginEmail').value;
+      const password = document.getElementById('loginPassword').value;
+      
+      try {
+        const res = await fetch('/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+
+        const data = await res.json();
+        
+        if (res.ok) {
+          // Store email for OTP verification
+          currentEmail = email;
+          document.getElementById('loginEmailToVerify').textContent = email;
+          
+          // Show OTP form
+          loginForm.classList.remove('active');
+          loginOtpForm.classList.add('active');
+          startCountdown('loginCountdown', 2);
+        } else {
+          alert(data.error || 'Login failed!');
+        }
+      } catch (error) {
+        console.error('Login error:', error);
+        alert('An error occurred during login. Please try again.');
+      }
+    });
+
+    // Registration form submission
+    document.getElementById('registerFormElement').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const fullname = document.getElementById('regFullname').value;
+      const email = document.getElementById('regEmail').value;
+      const password = document.getElementById('registerPassword').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+      
+      if (password !== confirmPassword) {
+        alert('Passwords do not match!');
+        return;
+      }
+      
+      try {
+        const res = await fetch('/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ fullname, email, password })
+        });
+
+        const data = await res.json();
+        
+        if (res.ok) {
+          // Store email for OTP verification
+          currentEmail = email;
+          document.getElementById('emailToVerify').textContent = email;
+          
+          // Show OTP form
+          registerForm.classList.remove('active');
+          registerOtpForm.classList.add('active');
+          startCountdown('regCountdown', 2);
+        } else {
+          alert(data.message || 'Registration failed!');
+        }
+      } catch (error) {
+        console.error('Registration error:', error);
+        alert('An error occurred during registration. Please try again.');
+      }
+    });
+
+    // Verify Registration OTP
+    async function verifyRegOtp() {
+      const otpInputs = document.querySelectorAll('#registerOtpForm .otp-input');
+      const otp = Array.from(otpInputs).map(input => input.value).join('');
+      
+      if (otp.length !== 6) {
+        alert('Please enter a valid 6-digit OTP');
+        return;
+      }
+      
+      try {
+        const res = await fetch('/auth/verify-register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: currentEmail, otp })
+        });
+
+        const data = await res.json();
+        
+        if (res.ok) {
+          alert('Registration successful! You can now login.');
+          loginToggle.click();
+        } else {
+          alert(data.error || 'Invalid OTP!');
+        }
+      } catch (error) {
+        console.error('OTP verification error:', error);
+        alert('An error occurred during OTP verification. Please try again.');
+      }
+    }
+
+    // Verify Login OTP
+    async function verifyLoginOtp() {
+      const otpInputs = document.querySelectorAll('#loginOtpForm .otp-input');
+      const otp = Array.from(otpInputs).map(input => input.value).join('');
+      
+      if (otp.length !== 6) {
+        alert('Please enter a valid 6-digit OTP');
+        return;
+      }
+      
+      try {
+        const res = await fetch('/auth/verify-login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: currentEmail, otp })
+        });
+
+        const data = await res.json();
+        
+        if (res.ok) {
+          // Store the token (JWT) for future authenticated requests
+          localStorage.setItem('authToken', data.token);
+          alert('Login successful! Redirecting to dashboard...');
+          // Redirect to dashboard or home page
+          window.location.href = '/users/dashboard';
+        } else {
+          alert(data.error || 'Invalid OTP!');
+        }
+      } catch (error) {
+        console.error('OTP verification error:', error);
+        alert('An error occurred during OTP verification. Please try again.');
+      }
+    }
+
+    // Resend OTP for login
+    document.getElementById('loginResendOtp').addEventListener('click', async function() {
+      try {
+        const res = await fetch('/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: currentEmail, password: 'resend' })
+        });
+
+        const data = await res.json();
+        
+        if (res.ok) {
+          alert('New OTP sent to your email!');
+          startCountdown('loginCountdown', 2);
+        } else {
+          alert(data.error || 'Failed to resend OTP!');
+        }
+      } catch (error) {
+        console.error('Resend OTP error:', error);
+        alert('An error occurred while resending OTP. Please try again.');
+      }
+    });
+
+    // Resend OTP for registration
+    document.getElementById('regResendOtp').addEventListener('click', async function() {
+      try {
+        const fullname = document.getElementById('regFullname').value;
+        const password = document.getElementById('registerPassword').value;
+        
+        const res = await fetch('/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ fullname, email: currentEmail, password })
+        });
+
+        const data = await res.json();
+        
+        if (res.ok) {
+          alert('New OTP sent to your email!');
+          startCountdown('regCountdown', 2);
+        } else {
+          alert(data.message || 'Failed to resend OTP!');
+        }
+      } catch (error) {
+        console.error('Resend OTP error:', error);
+        alert('An error occurred while resending OTP. Please try again.');
+      }
+    });
+  </script>
+</body>
+</html>

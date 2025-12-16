@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KaamSetu | Worker Registration</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #1a46e0;
+      --secondary: #e55a2b;
+      --dark: #ffffff;
+      --gray: #94A3B8;
+      --ring: rgba(113, 151, 247, 0.396);
+      --light: rgba(255,255,255,0.05);
+      --muted: #cbd5e1;
+      --radius-lg: 16px;
+      --shadow: 0 4px 12px rgba(0,0,0,0.2);
+      --card: rgba(255, 255, 255, 0.08);
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #30306fff 0%, #1a1a2e 30%, #2d1810 60%, #16213e 100%);
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+    }
+
+    #particles-js {
+      position: fixed;
+      top:0;
+      width: 100%;
+      height: 100%;
+      z-index: -1; 
+    }
+
+    .hamburger {
+            font-size: 2rem;
+            cursor: pointer;
+            display: none;
+          }
+
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        ul {
+            list-style: none;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 28px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: 1px solid goldenrod;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background: #1a46e0;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(45, 91, 255, 0.2);
+        }
+        
+        .btn-secondary {
+          border: 1px solid gray;
+            background: var(--secondary);
+        }
+        
+        .btn-secondary:hover {
+            background: #e55a2b;
+            box-shadow: 0 10px 20px rgba(255, 107, 53, 0.2);
+        }
+
+     /* Header */
+        header {
+            padding: 1rem 2rem;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(198, 197, 197, 0.05);
+            z-index: 1000;
+            background: rgba(159, 158, 158, 0.15);
+            border:1px solid rgba(159, 158, 158, 0.15);
+        }
+
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem 6rem;
+            width: 100%;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            color:#cbd6f5;
+        }
+        
+        .logo span {
+            color: #00d4ff !important;
+        }
+        
+        nav ul {
+            display: flex;
+            gap: 3rem;
+        }
+        
+        nav a {
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav a:hover {
+          color: #00d4ff !important;
+        }
+        .nav-link a {
+          position: relative;
+          display: inline-block;
+          font-weight: 500;
+          transition: color 0.3s;
+          text-decoration: none;
+      }
+        /* Underline animation on hover */
+        .nav-link a::after {
+            content: "";
+            position: absolute;
+            width: 0%;
+            height: 2px;
+            bottom: -3px;
+            left: 0;
+            background-color: #00d4ff;
+            transition: width 0.3s ease;
+        }
+        .nav-link a:hover::after {
+            width: 100%;
+        }
+        
+        .header-btns {
+            display: flex;
+            gap: 1rem;
+        }
+
+    .register-card {
+      background: var(--card);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      padding: 40px;
+      width: 100%;
+      max-width: 1110px;
+      margin-top: 200px;
+    }
+    #registerForm{
+        max-width: 650px;
+        margin: 0 auto;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 2rem;
+      color: #cbd6f5;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+        font-size: 1.5rem;
+      display: block;
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.1);
+      color: white;
+      outline: none;
+      font-size: 1.5rem;
+    }
+    select option{
+      background:light-blue;
+      color: black;
+    }
+    input::placeholder, textarea::placeholder {
+      color: var(--gray);
+    }
+    .btn-reg {
+      display: inline-block;
+      padding: 12px 28px;
+      background: var(--primary);
+      color: white;
+      border-radius: 50px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      border: 1px solid goldenrod;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 15px;
+    }
+    .btn-reg:hover {
+      background: #1535b5;
+      transform: translateY(-2px);
+    }
+    .face-section {
+      margin-top: 20px;
+      text-align: center;
+    }
+    video, canvas {
+      border-radius: 12px;
+      border: 2px solid rgba(255,255,255,0.2);
+      max-width: 100%;
+    }
+    .face-btns {
+      margin-top: 10px;
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+    .small-btn {
+      padding: 8px 16px;
+      border-radius: 30px;
+      font-size: 14px;
+    }
+    @media (max-width: 576px) {
+            header{
+                display: flex;
+                padding: 1rem;
+                margin: 0;
+                width: 100%;  
+            }
+
+            .header-container {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-items: center;
+                width: 100%;
+                padding: 0;
+                margin: 0;
+                gap: 0;
+            }
+
+            .logo {
+                justify-self: start;
+                font-size: 1.4rem;
+            }
+            .header-btns{
+                margin: 0;
+                padding: 0;
+            } 
+            .header-btns .btn{
+                margin: 0;
+                padding: 4px 12px;
+            }
+
+            .hamburger {
+                display: block;
+                font-size: 1.8rem;
+                cursor: pointer;
+                justify-self: end;
+            }
+            
+            .nav-link {
+                display: none;
+                flex-direction: column;
+                background-color: #222;
+                position: absolute;
+                top: 60px;
+                right: 0;
+                width: 200px;
+                padding: 1rem;
+                border-radius: 5px;
+            }
+
+            .nav-link.show {
+                display: flex;
+            }
+            .register-card {
+                width: 100%;
+                margin: 0;
+                margin-top: 50px;
+                padding:0 20px;
+            }
+            #registerForm{
+                width: 100%;
+                margin: 0 auto;
+            }
+        }
+  </style>
+</head>
+<body>
+
+    <div id="particles-js"></div>
+
+    <header>
+        <div class="header-container">
+            <a href="#" class="logo">Kaam<span>Setu</span></a>
+            <nav id="navbar"> 
+                <ul class="nav-link">
+                    <li><a href="#" >Home</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#how-it-works">How It Works</a></li>
+                    <li><a href="#testimonials">Testimonials</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="header-btns">
+                <a href="#login" class="btn">Login</a>
+                <a href="#register" class="btn btn-secondary">Register</a>
+            </div>
+            <div class="hamburger" onclick="toggleMenu()"> ☰ </div>
+        </div>
+    </header>
+  <div class="register-card">
+    <h2>Worker Registration</h2>
+    <form id="registerForm" action="/worker-register" method="POST">
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" name="name" placeholder="Enter your name" required>
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" name="email" placeholder="Enter email" required>
+      </div>
+      <div class="form-group">
+        <label>Phone</label>
+        <input type="tel" name="phone" placeholder="Enter phone number" required>
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" name="password" placeholder="Enter password" required>
+      </div>
+      <div class="form-group">
+        <label>Confirm Password</label>
+        <input type="password" name="confirm_password" placeholder="Confirm password" required>
+      </div>
+      <div class="form-group">
+        <label>Skills / Service Type</label>
+        <select name="skills" required>
+          <option value="">Select Service</option>
+          <option>Plumber</option>
+          <option>Electrician</option>
+          <option>Cleaner</option>
+          <option>Cook</option>
+          <option>Painter</option>
+          <option>Gardener</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Address</label>
+        <textarea name="address" rows="2" placeholder="Enter your address"></textarea>
+      </div>
+      <div class="form-group">
+        <label>City</label>
+        <input type="text" name="city" placeholder="Enter city">
+      </div>
+      <div class="form-group">
+        <label>Experience (Years)</label>
+        <input type="number" name="experience" placeholder="Enter years of experience">
+      </div>
+      <div class="form-group">
+        <label>Availability</label>
+        <select name="availability">
+          <option value="full-time">Full Time</option>
+          <option value="part-time">Part Time</option>
+        </select>
+      </div>
+
+      <!-- Face Registration Section -->
+      <div class="face-section">
+        <h3>Face Registration</h3>
+        <video id="video" width="320" height="240" autoplay></video>
+        <canvas id="canvas" width="320" height="240" style="display:none;"></canvas>
+        <div class="face-btns">
+          <button type="button" class="btn " onclick="startCamera()">Start Camera</button>
+          <button type="button" class="btn btn-secondary" onclick="captureFace()">Capture Face</button>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-reg">Register</button>
+    </form>
+  </div>
+
+          <!-- Load particles.js -->
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+
+    <!-- Configure particles -->
+  <script>
+    particlesJS("particles-js", {
+    "particles": {
+        "number": {
+        "value": 100
+        },
+        "size": {
+        "value": 3
+        },
+        "line_linked": {
+        "enable": true
+        },
+        "move": {
+        "speed": 1
+        }
+    }
+    });
+  </script>
+
+  <script>
+
+      function toggleMenu() {
+            const navLinks = document.querySelector('.nav-link');
+            const hamburger = document.querySelector('.hamburger');
+
+            navLinks.classList.toggle('show');
+
+            // Toggle hamburger icon
+            if (hamburger.innerHTML.trim() === '☰') {
+            hamburger.innerHTML = '✖';
+            } else {
+            hamburger.innerHTML = '☰';
+            }
+        }
+
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    let stream = null;
+
+    function startCamera() {
+      navigator.mediaDevices.getUserMedia({ video: true })
+        .then(s => {
+          stream = s;
+          video.srcObject = s;
+        })
+        .catch(err => alert("Camera access denied: " + err));
+    }
+
+    function captureFace() {
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+      const imageData = canvas.toDataURL('image/png');
+      console.log("Face captured:", imageData.substring(0,50));
+
+      // TODO: send imageData to backend (/register/face)
+      // fetch('/register/face', { method:"POST", body: JSON.stringify({image:imageData}) })
+    }
+
+    document.getElementById('registerForm').addEventListener('submit', function(e){
+      e.preventDefault();
+      alert("Worker Registered! (Backend integration pending)");
+      // TODO: send form data + face data to Flask/Django backend
+    });
+  </script>
+</body>
+</html>

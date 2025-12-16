@@ -1,0 +1,1284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KaamSetu | Rojgaar ka Digital Setu</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+          --primary: #1a46e0;
+          --secondary: #e55a2b;
+          --dark: #ffffff;
+          --gray: #94A3B8;
+          --ring: rgba(113, 151, 247, 0.396);
+          --light: rgba(255,255,255,0.05);
+          --muted: #cbd5e1;
+          --radius-lg: 16px;
+          --shadow: 0 4px 12px rgba(0,0,0,0.2);
+          --card: rgba(255, 255, 255, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+            font-family: 'Segoe UI','Poppins', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #30306fff 0%, #1a1a2e 30%, #2d1810 60%, #16213e 100%);
+            min-height: 100vh;
+            color: white;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+            /* Appear on scroll */
+        .reveal { opacity:0; transform: translateY(20px); transition: .6s cubic-bezier(.2,.7,.2,1) }
+        .reveal.in { opacity:1; transform: none }
+
+        /* Ring stat card */
+        .stat-cards { display:grid; gap:16px; grid-template-columns: repeat(2, minmax(0,1fr)); }
+        .card { background: var(--card); border:1px solid rgba(255,255,255,.12); border-radius: var(--radius-lg); padding:18px; box-shadow: var(--shadow); position:relative; overflow:hidden }
+        .card .tag { font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:.2em }
+        .card .big { font-size: clamp(24px, 5vw, 42px); font-weight:800; margin-top: 8px }
+        .ring { position:absolute; right:-60px; bottom:-60px; width:180px; height:180px; border-radius:50%; border: 16px solid var(--ring) }
+        
+
+        .hamburger {
+            font-size: 2rem;
+            cursor: pointer;
+            display: none;
+            }
+
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        ul {
+            list-style: none;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 28px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: 1px solid goldenrod;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background: #1a46e0;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(45, 91, 255, 0.2);
+        }
+        
+        .btn-secondary {
+          border: 1px solid gray;
+            background: var(--secondary);
+        }
+        
+        .btn-secondary:hover {
+            background: #e55a2b;
+            box-shadow: 0 10px 20px rgba(255, 107, 53, 0.2);
+        }
+        
+        /* Header */
+        header {
+            padding: 1rem 2rem;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(198, 197, 197, 0.05);
+            z-index: 1000;
+            background: rgba(159, 158, 158, 0.15);
+            border:1px solid rgba(159, 158, 158, 0.15);
+        }
+
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem 6rem;
+            width: 100%;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            color:#cbd6f5;
+        }
+        
+        .logo span {
+            color: #00d4ff !important;
+        }
+        
+        nav ul {
+            display: flex;
+            gap: 3rem;
+        }
+        
+        nav a {
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav a:hover {
+          color: #00d4ff !important;
+        }
+        .nav-link a {
+          position: relative;
+          display: inline-block;
+          font-weight: 500;
+          transition: color 0.3s;
+          text-decoration: none;
+      }
+        /* Underline animation on hover */
+        .nav-link a::after {
+            content: "";
+            position: absolute;
+            width: 0%;
+            height: 2px;
+            bottom: -3px;
+            left: 0;
+            background-color: #00d4ff;
+            transition: width 0.3s ease;
+        }
+        .nav-link a:hover::after {
+            width: 100%;
+        }
+        
+        .header-btns {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding: 150px 0 100px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-content {
+            max-width: 600px;
+            z-index: 2;
+            position: relative;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            color: var(--dark);
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--gray);
+            margin-bottom: 30px;
+        }
+        
+        .hero-btns {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .hero-image {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            width: 50%;
+            z-index: 1;
+        }
+        
+        /* Services */
+        .services {
+            padding: 100px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+        
+        .section-title p {
+            color: var(--gray);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .service-card {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(248, 235, 235, 0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .service-img {
+            height: 200px;
+            background: linear-gradient(45deg, #2D5BFF, #2DD4BF);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .service-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .service-img i {
+            font-size: 64px;
+            color: white;
+        }
+        
+        .service-content {
+            padding: 25px;
+        }
+        
+        .service-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .service-content p {
+            color: var(--gray);
+            margin-bottom: 20px;
+        }
+
+        
+        /* How It Works */
+        .how-it-works {
+            padding: 100px 0;
+            background: var(--light);
+        }
+        
+        .steps {
+            display: flex;
+            justify-content: space-between;
+            max-width: 900px;
+            margin: 0 auto;
+            gap: 2rem;
+        }
+        
+        .step {
+            text-align: center;
+            flex: 1;
+            position: relative;
+            padding: 0 20px;
+        }
+        
+        .step-number {
+            width: 60px;
+            height: 60px;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 0 auto 20px;
+        }
+        
+        .step h3 {
+            margin-bottom: 15px;
+        }
+        
+        .step p {
+            color: var(--gray);
+        }
+        
+        /* CTA Section */
+        .cta {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 100px 0;
+          color: white;
+          text-align: center;
+        }
+        
+        .cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .cta p {
+            max-width: 600px;
+            margin: 0 auto 30px;
+            font-size: 1.1rem;
+        }
+        
+        /* Testimonials */
+        .testimonials {
+            padding: 100px 0;
+            
+        }
+        
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .testimonial-card {
+            background: var(--light);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        }
+        
+        .testimonial-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .testimonial-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 1.5rem;
+            margin-right: 15px;
+        }
+        
+        .testimonial-rating {
+            color: #FFC107;
+            margin-bottom: 10px;
+        }
+        
+        /* Footer */
+        footer {
+            background: rgba(70, 70, 70, 0.185);
+            border:1px solid rgba(159, 158, 158, 0.233);
+            color: white;
+            padding: 70px 0 30px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+        }
+        
+        .footer-column ul {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .footer-column a {
+            color: #CBD5E1;
+            transition: color 0.3s;
+        }
+        
+        .footer-column a:hover {
+            color: rgb(75, 127, 247);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background 0.3s;
+        }
+        
+        .social-links a:hover {
+            background: var(--primary);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #94A3B8;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+            
+            .hero-image {
+                width: 45%;
+                opacity: 0.6;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            nav ul {
+                gap: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .hero {
+                padding: 180px 0 80px;
+                text-align: center;
+            }
+            
+            .hero-content {
+                margin: 0 auto;
+            }
+            
+            .hero-btns {
+                justify-content: center;
+            }
+            
+            .hero-image {
+                display: none;
+            }
+            
+            .steps {
+                flex-direction: column;
+                gap: 3rem;
+            }
+            .cta{
+                flex-direction:column;
+                gap:2rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            header{
+                display: flex;
+                padding: 1rem;
+                margin: 0;
+                width: 100%;  
+            }
+
+            .header-container {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-items: center;
+                width: 100%;
+                padding: 0;
+                margin: 0;
+                gap: 0;
+            }
+
+            .logo {
+                justify-self: start;
+                font-size: 1.4rem;
+            }
+            .header-btns{
+                margin: 0;
+                padding: 0;
+            } 
+            .header-btns .btn{
+                margin: 0;
+                padding: 4px 12px;
+            }
+
+            .hamburger {
+                display: block;
+                font-size: 1.8rem;
+                cursor: pointer;
+                justify-self: end;
+            }
+            
+            .nav-link {
+                display: none;
+                flex-direction: column;
+                background-color: #222;
+                position: absolute;
+                top: 60px;
+                right: 0;
+                width: 200px;
+                padding: 1rem;
+                border-radius: 5px;
+            }
+
+            .nav-link.show {
+                display: flex;
+            }
+
+            .nav-link a {
+                padding: 0;
+            }
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero-btns {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 250px;
+                text-align: center;
+            }
+            
+            .section-title h2 {
+                font-size: 2rem;
+            }
+        }
+        
+        /* Modal Styles */
+        .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        }
+        .modal.active {
+        opacity: 1;
+        visibility: visible;
+        }
+        .modal-content {
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        width: 90%;
+        max-width: 500px;
+        border-radius: 20px;
+        padding: 30px;
+        box-shadow: var(--shadow);
+        transform: translateY(-20px);
+        transition: all 0.3s ease;
+        position: relative;
+        }
+        .modal.active .modal-content {
+        transform: translateY(0);
+        }
+        .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .modal-title {
+        font-size: 24px;
+        font-weight: 600;
+        color: #cbd6f5;
+        }
+        .modal-close {
+        background: none;
+        border: none;
+        color: var(--gray);
+        font-size: 24px;
+        cursor: pointer;
+        transition: color 0.3s ease;
+        }
+        .modal-close:hover {
+        color: white;
+        }
+        .user-type-selection {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        margin-bottom: 25px;
+        }
+        .user-type-btn {
+        display: flex;
+        align-items: center;
+        padding: 15px 20px;
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 10px;
+        color: white;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-align: left;
+        }
+        .user-type-btn:hover {
+        background: rgba(255,255,255,0.1);
+        transform: translateX(5px);
+        }
+        .user-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 15px;
+        font-size: 18px;
+        }
+        .user-icon.user {
+        background: rgba(26, 70, 224, 0.2);
+        color: #1a46e0;
+        }
+        .user-icon.worker {
+        background: rgba(229, 90, 43, 0.2);
+        color: #e55a2b;
+        }
+        .user-icon.admin {
+        background: rgba(16, 185, 129, 0.2);
+        color: #10b981;
+        }
+        .user-type-info h3 {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 5px;
+        }
+        .user-type-info p {
+        font-size: 14px;
+        color: var(--gray);
+        margin: 0;
+        }
+        .modal-footer {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 20px;
+        padding-top: 15px;
+        border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+        .user-type-btn {
+            padding: 12px 15px;
+        }
+        .user-icon {
+            width: 35px;
+            height: 35px;
+            font-size: 16px;
+            margin-right: 12px;
+        }
+        .user-type-info h3 {
+            font-size: 16px;
+        }
+        .user-type-info p {
+            font-size: 13px;
+        }
+        }
+        
+        @media (max-width: 480px) {
+        .modal-content {
+            padding: 20px;
+        }
+        .modal-title {
+            font-size: 20px;
+        }
+        .user-type-btn {
+            flex-direction: column;
+            text-align: center;
+        }
+        .user-icon {
+            margin-right: 0;
+            margin-bottom: 10px;
+        }
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <a href="#" class="logo">Kaam<span>Setu</span></a>
+            <nav id="navbar"> 
+                <ul class="nav-link">
+                    <li><a href="#" >Home</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#how-it-works">How It Works</a></li>
+                    <li><a href="#testimonials">Testimonials</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="header-btns">
+                <a href="#login" class="btn" id="loginBtn" >Login</a>
+                <a href="#register" class="btn btn-secondary" id="registerBtn">Register</a>
+            </div>
+            <div class="hamburger" onclick="toggleMenu()"> ☰ </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Professional Home Services At Your Doorstep</h1>
+                <p>From plumbing to electrical work, cleaning to repairs - we connect you with trusted professionals for all your home service needs.</p>
+                <div class="hero-btns">
+                    <a href="#services" class="btn">Our Services</a>
+                    <a href="#" class="btn btn-secondary" id="loginBtn">Book Now</a>
+                </div>
+            </div>
+        </div>
+        <div class="hero-image">
+            <svg viewBox="0 0 600 500" xmlns="http://www.w3.org/2000/svg">
+                <path d="M435.2 342.6c-23.7 0-42.9-19.2-42.9-42.9s19.2-42.9 42.9-42.9 42.9 19.2 42.9 42.9-19.2 42.9-42.9 42.9z" fill="#2DD4BF"/>
+                <path d="M435.2 285.3c8 0 14.4 6.5 14.4 14.4s-6.5 14.4-14.4 14.4-14.4-6.5-14.4-14.4 6.4-14.4 14.4-14.4z" fill="#fff"/>
+                <path d="M435.2 285.3c8 0 14.4 6.5 14.4 14.4s-6.5 14.4-14.4 14.4-14.4-6.5-14.4-14.4 6.4-14.4 14.4-14.4z" fill="#fff"/>
+                <path d="M238.1 342.6c-23.7 0-42.9-19.2-42.9-42.9s19.2-42.9 42.9-42.9 42.9 19.2 42.9 42.9-19.2 42.9-42.9 42.9z" fill="#2D5BFF"/>
+                <path d="M238.1 285.3c8 0 14.4 6.5 14.4 14.4s-6.5 14.4-14.4 14.4-14.4-6.5-14.4-14.4 6.5-14.4 14.4-14.4z" fill="#fff"/>
+                <path d="M435.2 342.6c-23.7 0-42.9-19.2-42.9-42.9s19.2-42.9 42.9-42.9 42.9 19.2 42.9 42.9-19.2 42.9-42.9 42.9z" fill="#2DD4BF"/>
+                <path d="M435.2 285.3c8 0 14.4 6.5 14.4 14.4s-6.5 14.4-14.4 14.4-14.4-6.5-14.4-14.4 6.4-14.4 14.4-14.4z" fill="#fff"/>
+                <path d="M238.1 342.6c-23.7 0-42.9-19.2-42.9-42.9s19.2-42.9 42.9-42.9 42.9 19.2 42.9 42.9-19.2 42.9-42.9 42.9z" fill="#2D5BFF"/>
+                <path d="M238.1 285.3c8 0 14.4 6.5 14.4 14.4s-6.5 14.4-14.4 14.4-14.4-6.5-14.4-14.4 6.5-14.4 14.4-14.4z" fill="#fff"/>
+                <path d="M336.6 399.9c-23.7 0-42.9-19.2-42.9-42.9s19.2-42.9 42.9-42.9 42.9 19.2 42.9 42.9-19.2 42.9-42.9 42.9z" fill="#FF6B35"/>
+                <path d="M336.6 342.6c8 0 14.4 6.5 14.4 14.4s-6.5 14.4-14.4 14.4-14.4-6.5-14.4-14.4 6.5-14.4 14.4-14.4z" fill="#fff"/>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services" id="services">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Premium Services</h2>
+                <p>We offer a wide range of professional home services to keep your home in perfect condition</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-img">
+                        <img  src="{{ url_for('static', filename='images/cook.png') }}" alt="Home Repairs Icon">
+                    </div>
+                    <div class="service-content">
+                        <h3> Cooking <i class="fas fa-utensils"></i></h3>
+                        <p>Cook your meal at your home.  </p>
+                        <a href="#" class="btn" >Book Now</a>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-img">
+                        <img  src="{{ url_for('static', filename='images/home_repair.png') }}" alt="Home Repairs Icon">
+                    </div>
+                    <div class="service-content">
+                        <h3> Home Repairs <i class="fas fa-tools"> </i> </h3>
+                        <p>From minor fixes to major renovations, our experts handle all types of home repairs with precision.</p>
+                        <a href="#" class="btn">Book Now</a>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-img">
+                        <img  src="{{ url_for('static', filename='images/plumbing.png') }}" alt="Home Repairs Icon">
+                    </div>
+                    <div class="service-content">
+                        <h3>Plumbing <i class="fas fa-faucet"></i></h3>
+                        <p>Leaky faucets, clogged drains, or pipe installations - our plumbers are available 24/7.</p>
+                        <a href="#" class="btn">Book Now</a>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-img">
+                        <img  src="{{ url_for('static', filename='images/electrical.png') }}" alt="Home Repairs Icon">
+                    </div>
+                    <div class="service-content">
+                        <h3>Electrical <i class="fas fa-bolt"></i></h3>
+                        <p>Professional electricians for installations, repairs, and safety inspections.</p>
+                        <a href="#" class="btn">Book Now</a>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-img">
+                        <img  src="{{ url_for('static', filename='images/painting.png') }}" alt="Home Repairs Icon">
+                        
+                    </div>
+                    <div class="service-content">
+                        <h3>Painting <i class="fas fa-paint-roller"></i></h3>
+                        <p>Transform your space with our professional interior and exterior painting services.</p>
+                        <a href="#" class="btn">Book Now</a>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-img">
+                        <img  src="{{ url_for('static', filename='images/cleaning.png') }}" alt="Home Repairs Icon">
+                    </div>
+                    <div class="service-content">
+                        <h3>Deep Cleaning <i class="fas fa-soap"></i></h3>
+                        <p>Thorough cleaning services for your home, office, or after renovation.</p>
+                        <a href="#" class="btn">Book Now</a>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-img">
+                        <img  src="{{ url_for('static', filename='images/gardening.png') }}" alt="Home Repairs Icon">
+                    </div>
+                    <div class="service-content">
+                        <h3>Gardening <i class="fas fa-tree"></i></h3>
+                        <p>Lawn care, landscaping, and garden maintenance to keep your outdoor space beautiful.</p>
+                        <a href="#" class="btn">Book Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- How It Works -->
+    <section class="how-it-works" id="how-it-works">
+        <div class="container">
+            <div class="section-title">
+                <h2>How It Works</h2>
+                <p>Getting professional help for your home has never been easier</p>
+            </div>
+            <div class="steps">
+                <div class="step glass">
+                    <div class="step-number">1</div>
+                    <h3>Book a Service</h3>
+                    <p>Use our website or app to book a service at your convenience</p>
+                </div>
+                <div class="step glass">
+                    <div class="step-number">2</div>
+                    <h3>Match with a Pro</h3>
+                    <p>We connect you with the best professional for your specific need</p>
+                </div>
+                <div class="step glass">
+                    <div class="step-number">3</div>
+                    <h3>Get It Done</h3>
+                    <p>Your pro arrives on time and completes the job to your satisfaction</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container">
+            <h2>Ready to transform your home?</h2>
+            <p>Join thousands of satisfied customers who trust KaamSetu for their home service needs</p>
+            <a href="#book" class="btn btn-secondary">Book a Service Now</a>
+        </div>
+         <div class="stat-cards container">
+              <div class="card reveal">
+                <div class="tag">✅Verified Workers</div>
+                <div class="big">500+</div>
+                <div class="ring" aria-hidden="true"></div>
+              </div>
+              <div class="card reveal">
+                <div class="tag">Cities Covered</div>
+                <div class="big"> 20+ </div>
+                <div class="ring" aria-hidden="true"></div>
+              </div>
+              <div class="card reveal">
+                <div class="tag">Services available</div>
+                <div class="big">24 Hours</div>
+                <div class="ring" aria-hidden="true"></div>
+              </div>
+              <div class="card reveal">
+                <div class="tag">⭐ Customer Ratingr</div>
+                <div class="big">4.8/5</div>
+                <div class="ring" aria-hidden="true"></div>
+              </div>
+            </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials" id="testimonials">
+        <div class="container">
+            <div class="section-title">
+                <h2>What Our Customers Say</h2>
+                <p>Don't just take our word for it - hear from our satisfied customers</p>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card glass">
+                    <div class="testimonial-header">
+                        <div class="testimonial-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div>
+                            <h3>Sarah Johnson</h3>
+                            <div class="testimonial-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p>"The plumber arrived right on time and fixed our leaking faucet in no time. Professional and courteous service. Highly recommend!"</p>
+                </div>
+                <div class="testimonial-card glass">
+                    <div class="testimonial-header">
+                        <div class="testimonial-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div>
+                            <h3>Michael Thompson</h3>
+                            <div class="testimonial-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p>"I've used KaamSetu for multiple services now - painting, electrical, and cleaning. Each time the service has been exceptional."</p>
+                </div>
+                <div class="testimonial-card glass">
+                    <div class="testimonial-header">
+                        <div class="testimonial-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div>
+                            <h3>Rahul Verma</h3>
+                            <div class="testimonial-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p>"The deep cleaning service transformed my apartment. It's spotless! The team was efficient and paid attention to all the details I requested."</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>KaamSetu</h3>
+                    <p>Professional home services at your fingertips. Quality guaranteed.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Services</h3>
+                    <ul>
+                        <li><a href="#">Home Repairs</a></li>
+                        <li><a href="#">Plumbing</a></li>
+                        <li><a href="#">Electrical</a></li>
+                        <li><a href="#">Painting</a></li>
+                        <li><a href="#">Cleaning</a></li>
+                        <li><a href="#">Gardening</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Company</h3>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">How It Works</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact Us</h3>
+                    <ul>
+                        <li><i class="fas fa-phone"></i> +1 (555) 123-4567</li>
+                        <li><i class="fas fa-envelope"></i> support@kaamsetu.com</li>
+                        <li><i class="fas fa-map-marker-alt"></i> 123 KaamSetu Service. Patna City, India</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 KaamSetu All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- login / Register - Modal  -->
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title">Login to KaamSetu</h3>
+            <button class="modal-close">&times;</button>
+        </div>
+        <div class="user-type-selection">
+            <div class="user-type-btn" data-type="user" data-action="login">
+            <div class="user-icon user">
+                <i class="fas fa-user"></i>
+            </div>
+            <div class="user-type-info">
+                <h3>Login as User</h3>
+                <p>Access your personal account to book services</p>
+            </div>
+            </div>
+            
+            <div class="user-type-btn" data-type="worker" data-action="login">
+            <div class="user-icon worker">
+                <i class="fas fa-tools"></i>
+            </div>
+            <div class="user-type-info">
+                <h3>Login as Worker</h3>
+                <p>Access your worker account to manage services</p>
+            </div>
+            </div>
+            
+            <div class="user-type-btn" data-type="admin" data-action="login">
+            <div class="user-icon admin">
+                <i class="fas fa-cog"></i>
+            </div>
+            <div class="user-type-info">
+                <h3>Login as Admin</h3>
+                <p>Access admin panel to manage the platform</p>
+            </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" id="goToRegisterFromLogin">Need an account? Register</button>
+        </div>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div class="modal" id="registerModal">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title">Register with KaamSetu</h3>
+            <button class="modal-close">&times;</button>
+        </div>
+        <div class="user-type-selection">
+            <div class="user-type-btn" data-type="user" data-action="register" id="registerAsUserBtn">
+            <div class="user-icon user">
+                <i class="fas fa-user"></i>
+            </div>
+            <div class="user-type-info">
+                <h3><a href="/auth/login" class="btn btn-primary">Register as User</a></h3>
+                <p>Create an account to book services</p>
+            </div>
+            </div>
+            
+            <div class="user-type-btn" data-type="worker" data-action="register">
+            <div class="user-icon worker">
+                <i class="fas fa-tools"></i>
+            </div>
+            <div class="user-type-info">
+                <h3>Register as Worker</h3>
+                <p>Create a worker account to offer services</p>
+            </div>
+            </div>
+            
+            <div class="user-type-btn" data-type="admin" data-action="register">
+            <div class="user-icon admin">
+                <i class="fas fa-cog"></i>
+            </div>
+            <div class="user-type-info">
+                <h3>Register as Admin</h3>
+                <p>Request admin access to manage the platform</p>
+            </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" id="goToLoginFromRegister">Already have an account? Login</button>
+        </div>
+        </div>
+    </div>
+
+    <script>
+        // Get modal elements
+        const loginModal = document.getElementById('loginModal');
+        const registerModal = document.getElementById('registerModal');
+        
+        // Get buttons
+        const loginBtn = document.getElementById('loginBtn');
+        const registerBtn = document.getElementById('registerBtn');
+        const goToRegisterFromLogin = document.getElementById('goToRegisterFromLogin');
+        const goToLoginFromRegister = document.getElementById('goToLoginFromRegister');
+        
+        // Get all close buttons
+        const closeButtons = document.querySelectorAll('.modal-close');
+        
+        // Open login modal
+        loginBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        loginModal.classList.add('active');
+        });
+        
+        // Open register modal
+        registerBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        registerModal.classList.add('active');
+        });
+        
+        // Switch to register from login
+        goToRegisterFromLogin.addEventListener('click', function() {
+        loginModal.classList.remove('active');
+        registerModal.classList.add('active');
+        });
+        
+        // Switch to login from register
+        goToLoginFromRegister.addEventListener('click', function() {
+        registerModal.classList.remove('active');
+        loginModal.classList.add('active');
+        });
+        
+        // Close modals when clicking on close button
+        closeButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            loginModal.classList.remove('active');
+            registerModal.classList.remove('active');
+        });
+        });
+        
+        // Close modals when clicking outside
+        window.addEventListener('click', function(e) {
+        if (e.target === loginModal) {
+            loginModal.classList.remove('active');
+        }
+        if (e.target === registerModal) {
+            registerModal.classList.remove('active');
+        }
+        });
+        
+        // Handle user type selection
+        const userTypeButtons = document.querySelectorAll('.user-type-btn');
+        userTypeButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const type = this.getAttribute('data-type');
+            const action = this.getAttribute('data-action');
+            
+            // In a real application, this would redirect to the appropriate page
+            // For demonstration, we'll just show an alert
+            alert(`Redirecting to ${action} as ${type} page...`);
+            
+            // Close the modal
+            loginModal.classList.remove('active');
+            registerModal.classList.remove('active');
+        });
+        });
+    </script>
+
+    <script>
+    
+        function toggleMenu() {
+            const navLinks = document.querySelector('.nav-link');
+            const hamburger = document.querySelector('.hamburger');
+
+            navLinks.classList.toggle('show');
+
+            // Toggle hamburger icon
+            if (hamburger.innerHTML.trim() === '☰') {
+            hamburger.innerHTML = '✖';
+            } else {
+            hamburger.innerHTML = '☰';
+            }
+        }
+
+
+
+        // Reveal on scroll
+        const io = new IntersectionObserver((entries)=>{
+          entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+        }, { threshold: .2 });
+        document.querySelectorAll('.reveal').forEach(el=> io.observe(el));
+
+
+        // Simple animation for elements when they come into view
+        document.addEventListener('DOMContentLoaded', function() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = 1;
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            // Observe service cards
+            document.querySelectorAll('.service-card').forEach(card => {
+                card.style.opacity = 0;
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                observer.observe(card);
+            });
+            
+            // Observe steps
+            document.querySelectorAll('.step').forEach(step => {
+                step.style.opacity = 0;
+                step.style.transform = 'translateY(20px)';
+                step.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                observer.observe(step);
+            });
+            
+            // Observe testimonials
+            document.querySelectorAll('.testimonial-card').forEach(card => {
+                card.style.opacity = 0;
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                observer.observe(card);
+            });
+        });
+    </script>
+</body>
+</html>

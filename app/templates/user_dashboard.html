@@ -1,0 +1,615 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>KaamSetu — User Dashboard</title>
+  <style>
+    :root{
+      --primary:#1a46e0;
+      --secondary:#e55a2b;
+      --dark:#ffffff;
+      --gray:#94A3B8;
+      --ring:rgba(113,151,247,0.396);
+      --muted:#9aa4b2;
+      --accent:#06b6d4;
+      --accent-2:#7c3aed;
+      --success:#10b981;
+      --danger:#ef4444;
+      font-family:'Poppins','Segoe UI',sans-serif;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{min-height:100vh;background:linear-gradient(135deg,#30306f 0%,#1a1a2e 30%,#2d1810 60%,#16213e 100%);color:#fff;line-height:1.6;}
+
+    .container{display:grid;grid-template-columns:260px 1fr;gap:24px;min-height:100vh;padding:20px;}
+
+    /* Sidebar */
+    .sidebar{background:rgba(255,255,255,0.06);border-radius:16px;padding:20px;box-shadow:0 6px 20px rgba(0,0,0,0.6);position:relative;}
+    .brand{display:flex;gap:12px;align-items:center;margin-bottom:18px}
+    .logo{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;font-weight:700;color:#051022;font-size:18px}
+    .brand h3{margin:0;font-size:18px;font-weight:600}
+    .nav{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+    .nav a{display:flex;align-items:center;gap:12px;padding:12px;border-radius:10px;color:var(--muted);text-decoration:none;font-size:15px;font-weight:500;}
+    .nav a.active,.nav a:hover{background:rgba(255,255,255,0.15);color:#fff;}
+    .small{font-size:12px;color:var(--muted)}
+
+    /* Header */
+    .header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:20px;flex-wrap:wrap;}
+    .search{flex:1;min-width:200px;display:flex;align-items:center;background:rgba(255,255,255,0.1);padding:10px 12px;border-radius:12px;gap:8px;border:1px solid rgba(255,255,255,0.15)}
+    .search input{background:transparent;border:none;outline:none;color:inherit;width:100%;font-size:15px}
+    .actions{display:flex;align-items:center;gap:12px}
+    .icon-btn{background:rgba(255,255,255,0.1);border:none;padding:10px;border-radius:10px;cursor:pointer;font-size:18px;color:#fff;transition:0.2s}
+    .icon-btn:hover{background:rgba(255,255,255,0.2)}
+
+    /* Main */
+    .main{padding:6px 0}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin:3rem}
+    .card{background:rgba(255,255,255,0.06);padding:20px;border-radius:16px;box-shadow:0 6px 18px rgba(0,0,0,0.6); margin:3rem;}
+    .card h4{margin:0 0 12px;font-size:16px;font-weight:600}
+    .stat{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap}
+    .big{font-size:24px;font-weight:700;margin:4px 0}
+    .tools{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-top:14px}
+    .tool{background:rgba(255,255,255,0.05);padding:14px;border-radius:12px;display:flex;flex-direction:column;gap:4px;cursor:pointer;transition:0.2s}
+    .tool:hover{background:rgba(255,255,255,0.1);}
+
+    /* Table */
+    .table{width:100%;border-collapse:collapse;margin-top:14px}
+    .table th{font-weight:600;text-align:left;padding:12px;color:var(--muted);font-size:14px}
+    .table td{padding:12px;border-top:1px dashed rgba(255,255,255,0.1);font-size:15px}
+    .badge{padding:6px 10px;border-radius:999px;font-size:13px}
+    .badge.pending{background:rgba(255,215,0,0.15);color:#fbbf24}
+    .badge.done{background:rgba(16,185,129,0.15);color:var(--success)}
+    .badge.cancelled{background:rgba(239,68,68,0.15);color:var(--danger)}
+    .badge.in-progress{background:rgba(6,182,212,0.15);color:var(--accent)}
+    button{padding:8px 16px;border-radius:8px;border:none;background:var(--primary);color:white;cursor:pointer;transition:0.2s}
+    button:hover{opacity:0.9;}
+    button.secondary{background:var(--secondary);}
+    button.success{background:var(--success);}
+    button.danger{background:var(--danger);}
+
+    /* Profile */
+    .profile{display:flex;align-items:center;gap:10px}
+    .avatar{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#1e293b,#0ea5a5);display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff}
+
+    /* Footer */
+    footer{margin-top:20px;text-align:center;font-size:14px;color:var(--muted);padding:12px 0}
+
+    /* Modal Styles */
+    .modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);display:none;justify-content:center;align-items:center;z-index:2000;}
+    .modal.open{display:flex;}
+    .modal-content{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 100%);padding:24px;border-radius:16px;width:90%;max-width:500px;box-shadow:0 10px 30px rgba(0,0,0,0.5);}
+    .modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+    .modal-title{font-size:20px;font-weight:600;}
+    .modal-close{background:none;border:none;color:var(--muted);font-size:24px;cursor:pointer;}
+    .modal-body{margin-bottom:20px;}
+    .modal-footer{display:flex;justify-content:flex-end;gap:12px;}
+
+    /* Service Grid */
+    .service-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin-top:16px;}
+    .service-card{background:rgba(255,255,255,0.05);padding:16px;border-radius:12px;cursor:pointer;transition:0.2s;}
+    .service-card:hover{background:rgba(255,255,255,0.1);transform:translateY(-2px);}
+    .service-icon{font-size:32px;margin-bottom:8px;}
+
+    /* Form Styles */
+    .form-group{margin-bottom:16px;}
+    .form-group label{display:block;margin-bottom:6px;font-weight:500;}
+    .form-control{width:100%;padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,0.15);background:transparent;color:#fff;font-size:15px;}
+    .form-control:focus{outline:none;border-color:var(--primary);}
+    .form-control option{background-color: #16213e;}
+
+    /* Responsive */
+    @media(max-width:980px){
+      .container{grid-template-columns:1fr}
+      .sidebar{position:fixed;top:0;left:-280px;width:240px;height:100%;z-index:1000;transition:0.3s}
+      .sidebar.open{left:0}
+      .main{padding-top:70px}
+      .menu-toggle{display:block;position:fixed;top:20px;left:20px;background:var(--accent);border:none;padding:10px 14px;border-radius:8px;color:#051022;font-weight:700;cursor:pointer;z-index:1100}
+    }
+    @media(max-width:600px){
+      .grid{grid-template-columns:1fr}
+      .tools{grid-template-columns:1fr}
+      .service-grid{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+  <button class="menu-toggle" onclick="toggleMenu()" style="display:none">☰</button>
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div>
+        <div class="brand">
+          <div class="logo">KS</div>
+          <div>
+            <h3>KaamSetu</h3>
+            <div class="small">User Dashboard</div>
+          </div>
+        </div>
+        <nav class="nav">
+          <a href="#" class="active">🏠 Overview</a>
+          <a href="#bookings">📅 My Bookings</a>
+          <a href="#services">🛠 Services</a>
+          <a href="#payments">💰 Payments</a>
+          <a href="#favorites">⭐ Favorites</a>
+          <a href="#profile" onclick="toggleProfile()">👤 Profile</a>
+          <a href="#support">🆘 Support</a>
+          <a href="#settings">⚙️ Settings</a>
+        </nav>
+      </div>
+      <div class="small">v1.0 • Last sync: Sep 15, 2025</div>
+    </aside>
+
+    <!-- Main -->
+    <main class="main">
+      <div class="header">
+        <div class="search"><input placeholder="Search services, workers, bookings..." /></div>
+        <div class="actions">
+          <button class="icon-btn" onclick="toggleNotifications()">🔔</button>
+          <button class="icon-btn" onclick="newBooking()">➕</button>
+          <button class="icon-btn" onclick="logout()">⎋</button>
+          <div class="profile">
+            <div class="avatar">RS</div>
+            <div>
+              <div style="font-weight:700">{{name}}</div>
+              <div class="small">Premium Member • Since 2024</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Overview Cards -->
+      <section class="grid">
+        <div class="card">
+          <h4>Today's Activity</h4>
+          <div class="stat">
+            <div><div class="big">2</div><div class="small">Active Bookings</div></div>
+            <div style="text-align:right"><div class="big">₹3,200</div><div class="small">Spent Today</div></div>
+          </div>
+        </div>
+        <div class="card">
+          <h4>Monthly Spending</h4>
+          <div class="stat">
+            <div><div class="big">₹12,500</div><div class="small">This month</div></div>
+            <div><button class="icon-btn" onclick="viewSpending()">📊</button></div>
+          </div>
+        </div>
+        <div class="card">
+          <h4>Worker Ratings</h4>
+          <div class="stat"><div class="big">17</div><div class="small">Workers Rated</div></div>
+        </div>
+      </section>
+
+      <!-- Bookings -->
+      <section id="bookings" class="card">
+        <h4>Recent Bookings</h4>
+        <table class="table">
+          <thead><tr><th>Date</th><th>Service</th><th>Worker</th><th>Amount</th><th>Status</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr><td>Sep 15, 2025</td><td>Plumbing Repair</td><td>Sukesh</td><td>₹1,450</td><td><span class="badge in-progress">In Progress</span></td><td><button onclick="trackBooking(this)">Track</button></td></tr>
+            <tr><td>Sep 14, 2025</td><td>AC Service</td><td>Vijay</td><td>₹1,800</td><td><span class="badge done">Completed</span></td><td><button class="success" onclick="rateService(this)">Rate</button></td></tr>
+            <tr><td>Sep 13, 2025</td><td>Electrical Wiring</td><td>Rajesh</td><td>₹2,500</td><td><span class="badge done">Completed</span></td><td><button onclick="viewInvoice()">Invoice</button></td></tr>
+            <tr><td>Sep 12, 2025</td><td>Carpentry</td><td>Mohan</td><td>₹1,200</td><td><span class="badge cancelled">Cancelled</span></td><td><button class="secondary" onclick="rebook()">Rebook</button></td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Services -->
+      <section id="services" class="card">
+        <h4>Popular Services</h4>
+        <div class="service-grid">
+          <div class="service-card" onclick="bookService('Plumbing')">
+            <div class="service-icon">🔧</div>
+            <strong>Plumbing</strong>
+            <div class="small">Pipe repair, faucet installation</div>
+          </div>
+          <div class="service-card" onclick="bookService('Electrical')">
+            <div class="service-icon">⚡</div>
+            <strong>Electrical</strong>
+            <div class="small">Wiring, switch repair</div>
+          </div>
+          <div class="service-card" onclick="bookService('AC Service')">
+            <div class="service-icon">❄️</div>
+            <strong>AC Service</strong>
+            <div class="small">Cleaning, gas refill</div>
+          </div>
+          <div class="service-card" onclick="bookService('Carpentry')">
+            <div class="service-icon">🪚</div>
+            <strong>Carpentry</strong>
+            <div class="small">Furniture repair, installation</div>
+          </div>
+          <div class="service-card" onclick="bookService('Cleaning')">
+            <div class="service-icon">🧹</div>
+            <strong>Cleaning</strong>
+            <div class="small">Home, office deep cleaning</div>
+          </div>
+          <div class="service-card" onclick="bookService('Painting')">
+            <div class="service-icon">🎨</div>
+            <strong>Painting</strong>
+            <div class="small">Walls, furniture painting</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Payments -->
+      <section id="payments" class="card">
+        <h4>Payment Methods</h4>
+        <div class="tools">
+          <div class="tool" onclick="managePaymentMethods()"><strong>💳 Credit Card</strong><span class="small">**** 4567</span></div>
+          <div class="tool" onclick="managePaymentMethods()"><strong>📱 UPI</strong><span class="small">rahul@upi</span></div>
+          <div class="tool" onclick="managePaymentMethods()"><strong>🏦 Net Banking</strong><span class="small">HDFC Bank</span></div>
+          <div class="tool" onclick="addPaymentMethod()"><strong>➕ Add New</strong><span class="small">Payment method</span></div>
+        </div>
+      </section>
+
+      <!-- Favorites -->
+      <section id="favorites" class="card">
+        <h4>Favorite Workers</h4>
+        <div class="tools">
+          <div class="tool" onclick="viewWorker('Sukesh')"><strong>🔧 Sukesh</strong><span class="small">Plumber • ⭐4.8</span></div>
+          <div class="tool" onclick="viewWorker('Vijay')"><strong>❄️ Vijay</strong><span class="small">AC Tech • ⭐4.7</span></div>
+          <div class="tool" onclick="viewWorker('Rajesh')"><strong>⚡ Rajesh</strong><span class="small">Electrician • ⭐4.9</span></div>
+        </div>
+      </section>
+
+      <!-- Profile Modal -->
+      <section id="profile" class="modal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title">Edit Profile</h3>
+            <button class="modal-close" onclick="toggleProfile()">&times;</button>
+          </div>
+          <div class="modal-body">
+            <form onsubmit="event.preventDefault();saveProfile()">
+              <div class="form-group">
+                <label>Name</label>
+                <input type="text" class="form-control" value="Rahul Sharma">
+              </div>
+              <div class="form-group">
+                <label>Email</label>
+                <input type="email" class="form-control" value="rahul.sharma@example.com">
+              </div>
+              <div class="form-group">
+                <label>Phone</label>
+                <input type="tel" class="form-control" value="+91 98765 43210">
+              </div>
+              <div class="form-group">
+                <label>Address</label>
+                <textarea class="form-control" rows="3">B-102, Sunshine Apartments, Mumbai</textarea>
+              </div>
+              <button type="submit" style="width:100%">💾 Save Changes</button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <footer>&copy; 2025 KaamSetu. All Rights Reserved.</footer>
+    </main>
+  </div>
+
+  <!-- New Booking Modal -->
+  <div class="modal" id="bookingModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Book a Service</h3>
+        <button class="modal-close" onclick="closeModal('bookingModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Select Service</label>
+          <select class="form-control" id="serviceType">
+            <option value="">Choose a service</option>
+            <option value="Plumbing">Plumbing</option>
+            <option value="Electrical">Electrical</option>
+            <option value="AC Service">AC Service</option>
+            <option value="Carpentry">Carpentry</option>
+            <option value="Cleaning">Cleaning</option>
+            <option value="Painting">Painting</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Date & Time</label>
+          <input type="datetime-local" class="form-control" id="serviceDateTime">
+        </div>
+        <div class="form-group">
+          <label>Address</label>
+          <textarea class="form-control" id="serviceAddress" rows="3">B-102, Sunshine Apartments, Mumbai</textarea>
+        </div>
+        <div class="form-group">
+          <label>Special Instructions (Optional)</label>
+          <textarea class="form-control" id="specialInstructions" rows="2"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button onclick="closeModal('bookingModal')">Cancel</button>
+        <button onclick="confirmBooking()">Confirm Booking</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notifications Modal -->
+  <div class="modal" id="notificationsModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Notifications</h3>
+        <button class="modal-close" onclick="toggleNotifications()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="notification-item">
+          <strong>Booking Confirmed</strong>
+          <p>Your plumbing service with Sukesh is confirmed for today at 10 AM</p>
+          <small>10 minutes ago</small>
+        </div>
+        <div class="notification-item">
+          <strong>Payment Processed</strong>
+          <p>₹1,800 paid for AC service with Vijay</p>
+          <small>2 hours ago</small>
+        </div>
+        <div class="notification-item">
+          <strong>Reminder</strong>
+          <p>Your electrical service with Rajesh is scheduled for tomorrow</p>
+          <small>Yesterday</small>
+        </div>
+        <div class="notification-item">
+          <strong>New Feature</strong>
+          <p>You can now schedule recurring services</p>
+          <small>2 days ago</small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Payment Method Modal -->
+  <div class="modal" id="paymentModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Payment Methods</h3>
+        <button class="modal-close" onclick="closeModal('paymentModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Card Number</label>
+          <input type="text" class="form-control" placeholder="1234 5678 9012 3456">
+        </div>
+        <div style="display:flex;gap:12px">
+          <div class="form-group" style="flex:1">
+            <label>Expiry Date</label>
+            <input type="text" class="form-control" placeholder="MM/YY">
+          </div>
+          <div class="form-group" style="flex:1">
+            <label>CVV</label>
+            <input type="text" class="form-control" placeholder="123">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Cardholder Name</label>
+          <input type="text" class="form-control" placeholder="Rahul Sharma">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button onclick="closeModal('paymentModal')">Cancel</button>
+        <button onclick="savePaymentMethod()">Save Payment Method</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Rating Modal -->
+  <div class="modal" id="ratingModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Rate Service</h3>
+        <button class="modal-close" onclick="closeModal('ratingModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Service Provider</label>
+          <input type="text" class="form-control" id="workerName" readonly>
+        </div>
+        <div class="form-group">
+          <label>Service Type</label>
+          <input type="text" class="form-control" id="serviceName" readonly>
+        </div>
+        <div class="form-group">
+          <label>Rating</label>
+          <div style="font-size:24px;margin:10px 0">
+            <span onclick="setRating(1)">☆</span>
+            <span onclick="setRating(2)">☆</span>
+            <span onclick="setRating(3)">☆</span>
+            <span onclick="setRating(4)">☆</span>
+            <span onclick="setRating(5)">☆</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Review (Optional)</label>
+          <textarea class="form-control" rows="3" placeholder="Share your experience"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button onclick="closeModal('ratingModal')">Cancel</button>
+        <button onclick="submitRating()">Submit Review</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirmation Modal -->
+  <div class="modal" id="confirmationModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="confirmationTitle">Confirm Action</h3>
+        <button class="modal-close" onclick="closeModal('confirmationModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p id="confirmationMessage">Are you sure you want to proceed?</p>
+      </div>
+      <div class="modal-footer">
+        <button onclick="closeModal('confirmationModal')">Cancel</button>
+        <button id="confirmActionBtn" onclick="confirmAction()">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Menu toggle for responsive design
+    function toggleMenu() {
+      document.getElementById('sidebar').classList.toggle('open');
+    }
+
+    // Show/hide modals
+    function toggleModal(modalId) {
+      document.getElementById(modalId).classList.toggle('open');
+    }
+    
+    function closeModal(modalId) {
+      document.getElementById(modalId).classList.remove('open');
+    }
+
+    // Notifications
+    function toggleNotifications() {
+      toggleModal('notificationsModal');
+    }
+
+    // New booking
+    function newBooking() {
+      toggleModal('bookingModal');
+    }
+
+    function confirmBooking() {
+      const serviceType = document.getElementById('serviceType').value;
+      const serviceDateTime = document.getElementById('serviceDateTime').value;
+      
+      if (!serviceType || !serviceDateTime) {
+        alert('Please select a service and date/time');
+        return;
+      }
+      
+      alert(`Booking confirmed for ${serviceType} on ${new Date(serviceDateTime).toLocaleString()}`);
+      closeModal('bookingModal');
+    }
+
+    // Book service from service grid
+    function bookService(serviceName) {
+      toggleModal('bookingModal');
+      document.getElementById('serviceType').value = serviceName;
+    }
+
+    // Payment methods
+    function managePaymentMethods() {
+      toggleModal('paymentModal');
+    }
+
+    function addPaymentMethod() {
+      toggleModal('paymentModal');
+    }
+
+    function savePaymentMethod() {
+      alert('Payment method saved successfully!');
+      closeModal('paymentModal');
+    }
+
+    // View spending
+    function viewSpending() {
+      alert('Opening spending analytics...');
+    }
+
+    // Track booking
+    function trackBooking(button) {
+      const row = button.parentElement.parentElement;
+      const service = row.cells[1].textContent;
+      const worker = row.cells[2].textContent;
+      
+      alert(`Tracking ${service} with ${worker}\nWorker is on the way to your location.`);
+    }
+
+    // Rate service
+    function rateService(button) {
+      const row = button.parentElement.parentElement;
+      const service = row.cells[1].textContent;
+      const worker = row.cells[2].textContent;
+      
+      document.getElementById('workerName').value = worker;
+      document.getElementById('serviceName').value = service;
+      toggleModal('ratingModal');
+    }
+
+    function setRating(rating) {
+      const stars = document.querySelectorAll('#ratingModal .modal-body div span');
+      for (let i = 0; i < stars.length; i++) {
+        stars[i].textContent = i < rating ? '★' : '☆';
+      }
+    }
+
+    function submitRating() {
+      alert('Thank you for your rating!');
+      closeModal('ratingModal');
+    }
+
+    // View invoice
+    function viewInvoice() {
+      alert('Invoice downloaded successfully!');
+    }
+
+    // Rebook service
+    function rebook() {
+      alert('Opening booking form for the same service...');
+      toggleModal('bookingModal');
+    }
+
+    // View worker profile
+    function viewWorker(workerName) {
+      alert(`Opening profile of ${workerName}`);
+    }
+
+    // Profile
+    function toggleProfile(){
+      toggleModal('profile')
+    }
+
+    function saveProfile() {
+      alert('Profile saved successfully!');
+      closeModal('profile');
+    }
+
+    // Logout
+    function logout() {
+      showConfirmation(
+        'Logout', 
+        'Are you sure you want to logout?',
+        function() {
+          alert('Logged out successfully');
+          // In a real app, this would redirect to login page
+        }
+      );
+    }
+
+    // Confirmation dialog utility
+    let currentConfirmationCallback = null;
+
+    function showConfirmation(title, message, callback) {
+      document.getElementById('confirmationTitle').textContent = title;
+      document.getElementById('confirmationMessage').textContent = message;
+      currentConfirmationCallback = callback;
+      toggleModal('confirmationModal');
+    }
+
+    function confirmAction() {
+      if (currentConfirmationCallback) {
+        currentConfirmationCallback();
+      }
+      closeModal('confirmationModal');
+    }
+
+    // Responsive design adjustments
+    function checkScreenSize() {
+      const menuToggle = document.querySelector('.menu-toggle');
+      if (window.innerWidth <= 980) {
+        menuToggle.style.display = 'block';
+      } else {
+        menuToggle.style.display = 'none';
+        document.getElementById('sidebar').classList.remove('open');
+      }
+    }
+
+    window.addEventListener('resize', checkScreenSize);
+    window.addEventListener('load', checkScreenSize);
+  </script>
+</body>
+</html>
